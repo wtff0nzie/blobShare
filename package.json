@@ -1,0 +1,29 @@
+{
+  "name": "blobShare",
+  "description": "Simple JSON blob sharing.",
+  "url": "https://github.com/wtff0nzie/blobShare",
+  "keywords": [
+    "share",
+    "blob"
+  ],
+  "author": {
+    "name": "wtff0nzie",
+    "email": "stopbeing@deziddon.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wtff0nzie/blobShare"
+  },
+  "readmeFilename": "readme.md",
+  "main": "./server",
+  "version": "0.3.5",
+  "engines": {
+    "node": ">= 0.12"
+  },
+  "dependencies": {
+    "formidable": "*",
+    "mongojs": "0.10.0",
+    "node-uuid": "*",
+    "simpl3s": ">= 0.3.6"
+  }
+}
