@@ -46,26 +46,26 @@
 
         <section class="example">
             <h3>Adding a new blob <span>named <strong>test-blob</strong></span></h3>
-            <code>curl -v -H "Content-Type: application/json" -X POST -d '{"todo":{"subject":"build todo thingy"}}' \
-                http://localhost:8082/test-blob</code>
+            <code title="Click to copy this example to clipboard.">curl -v -H "Content-Type: application/json" -X POST -d '{"todo":{"subject":"build todo thingy"}}' \
+                http://blobshare.rocks/test-blob</code>
         </section>
 
         <section class="example">
             <h3>Reading an existing blob <span>named <strong>test-blob</strong></span></h3>
-            <code>http://localhost:8082/test-blob</code>
+            <code title="Click to copy this example to clipboard.">http://localhost:8082/test-blob</code>
         </section>
 
         <section class="example">
             <h3>Update a blob <span>named <strong>test-blob</strong></span></h3>
-            <code>curl -v -H "Content-Type: application/json" -X PATCH -d '{"todont":{"subject":"Re-watch SouthPark season 18."},"wiggle":1}' \
+            <code title="Click to copy this example to clipboard.">curl -v -H "Content-Type: application/json" -X PATCH -d '{"todont":{"subject":"Re-watch SouthPark season 18."},"wiggle":1}' \
                 http://localhost:8082/test-blob</code>
         </section>
 
         <section class="example">
             <h3>Deleting a blob <span>named <strong>test-blob</strong></span></h3>
-            <code>curl -X DELETE http://localhost:8082/test-blob</code>
+            <code title="Click to copy this example to clipboard.">curl -X DELETE http://localhost:8082/test-blob</code>
         </section>
-
+        curl -X DELETE http://localhost:8082/test-blob
     </main>
     <footer class="ftr">
         <p>&copy; 2015 <strong>blobShare</strong>.rocks</p>
@@ -84,12 +84,17 @@
             var copyToClip = function (el) {
                 var client = new ZeroClipboard(el);
 
-                client.on('aftercopy', function () {
-                   el.className = 'copied';
+                client.on('load', function (client) {
+                    client.on('datarequested', function (client) {
+                        console.log(el.innerHTML);
+                        client.setText(el.innerHTML);
 
-                    setTimeout(function () {
-                        el.className = '';
-                    }, 3 * 1000);
+                        el.className = 'copied';
+
+                        setTimeout(function () {
+                            el.className = '';
+                        }, 3 * 1000);
+                    });
                 });
             };
 
