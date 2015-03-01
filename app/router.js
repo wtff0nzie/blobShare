@@ -49,9 +49,9 @@ var routeRequest = function (payload) {
     } else if (reqPath.substr(0, 6) === '/media') {
         serveStaticFile();
     } else if (reqPath.substr(0, 4) === '/api') {
-        EVENTS.emit('blobShare', payload);
+        EVENTS.emit('blobShare', payload); // TMP
     } else {
-        serveStaticFile('/404.html');
+        EVENTS.emit('blobShare', payload);
     }
 };
 

@@ -21,8 +21,8 @@
     "node": ">= 0.12"
   },
   "dependencies": {
-    "formidable": "*",
-    "mongojs": "0.10.0",
+    "formidable": "1.0.14",
+    "mongojs": "0.18.1",
     "node-uuid": "*",
     "simpl3s": ">= 0.3.6"
   }

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <link rel="stylesheet" href="media/css/bS.css">
+    <title>BlobShare.rocks - JSON sharing</title>
+    <link rel="canonical" href="//blobshare.rocks">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
+    <meta name="description" content="JSON sharing">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta name="apple-mobile-web-app-title" content="BlobShare.rocks">
+    <meta name="application-name" content="BlobShare.rocks">
+    <meta name="msapplication-TileColor" content="#FFFFFF">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@">
+    <meta name="twitter:creator" content="@">
+    <meta name="twitter:title" content="BlobShare.rocks">
+    <meta name="twitter:description" content="BlobShare.rocks">
+    <meta name="twitter:image" content="favicon.png">
+    <meta property="og:title" content="BlobShare.rocks">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_IE">
+    <meta property="og:url" content="//BlobShare.rocks">
+    <meta property="og:image" content="favicon.png">
+    <meta property="fb:admins" content="">
+</head>
+<body role="application" class="bS">
+    <header class="hdr" role="banner">
+        <h1><strong>BlobShare</strong>.Rocks</h1>
+    </header>
+    <main class="content" role="main">
+
+        <article>
+            <p><abbr title="JavaScript Object Notation">JSON</abbr> sharing</p>
+            <div class="column">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas dictum metus augue, vitae elementum lorem venenatis nec. Vestibulum gravida leo dolor. Morbi nec mauris ut lacus consectetur dictum. Cras scelerisque tincidunt orci, eget pellentesque felis rutrum et. Cras semper, nulla et ornare efficitur, erat leo mattis ex, at sodales odio tellus ut diam. Quisque euismod leo non urna tristique egestas. Etiam in tortor nisl. In et ex pellentesque, porttitor urna a, blandit.</p>
+            </div>
+            <div class="column">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas dictum metus augue, vitae elementum lorem venenatis nec. Vestibulum gravida leo dolor. Morbi nec mauris ut lacus consectetur dictum. Cras scelerisque tincidunt orci, eget pellentesque felis rutrum et. Cras semper, nulla et ornare efficitur, erat leo mattis ex, at sodales odio tellus ut diam. Quisque euismod leo non urna tristique egestas. Etiam in tortor nisl. In et ex pellentesque, porttitor urna a, blandit.</p>
+            </div>
+        </article>
+
+        <section class="example">
+            <h3>Adding a new blob <span>named <strong>test-blob</strong></span></h3>
+            <code>curl -v -H "Content-Type: application/json" -X POST -d '{"todo":{"subject":"build todo thingy"}}' \
+                http://localhost:8082/test-blob</code>
+        </section>
+
+        <section class="example">
+            <h3>Reading an existing blob <span>named <strong>test-blob</strong></span></h3>
+            <code>http://localhost:8082/test-blob</code>
+        </section>
+
+        <section class="example">
+            <h3>Update a blob <span>named <strong>test-blob</strong></span></h3>
+            <code>curl -v -H "Content-Type: application/json" -X PATCH -d '{"todont":{"subject":"Re-watch SouthPark season 18."},"wiggle":1}' \
+                http://localhost:8082/test-blob</code>
+        </section>
+
+        <section class="example">
+            <h3>Deleting a blob <span>named <strong>test-blob</strong></span></h3>
+            <code>curl -X DELETE http://localhost:8082/test-blob</code>
+        </section>
+
+    </main>
+    <footer class="ftr">
+        <p>&copy; 2015 <strong>blobShare</strong>.rocks</p>
+    </footer>
+
+    <script src="/media/js/ZeroClipboard.min.js"></script>
+    <script>
+        (function () {
+            var q$ = function (selector, context) {
+                if (typeof selector === 'string') {
+                    return [].slice.call((context || document).querySelectorAll(selector));
+                }
+                return [selector];
+            };
+
+            var copyToClip = function (el) {
+                var client = new ZeroClipboard(el);
+
+                client.on('ready', function (evt) {
+                    client.on('aftercopy', function () {
+                       el.className = 'copied';
+
+                        setTimeout(function () {
+                            el.className = '';
+                        }, 3 * 1000);
+                    });
+                });
+            };
+
+            q$('code').forEach(copyToClip);
+        }());
+    </script>
+</body>
+</html>

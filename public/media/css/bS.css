@@ -1,0 +1,197 @@
+/* Reset */
+*,
+*:after,
+*:before{
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box;
+    box-sizing:border-box;
+    margin:0;
+    outline:none;
+    padding:0;
+    position:relative;
+    -webkit-touch-callout:none;
+    -webkit-tap-highlight-color:rgba(0,0,0,0);
+    -webkit-tap-highlight-color:transparent
+}
+
+
+/* Baseline */
+html{
+    background:#ffcc2f;
+    color:#fff;
+    font:62.5% 'HelveticaNeue-UltraLight','Helvetica Neue UltraLight','Helvetica Neue',Helvetica,Roboto,Arial,sans-serif;
+    min-height:100vh;
+    -moz-osx-font-smoothing:grayscale;
+    -ms-touch-action:manipulation;
+    touch-action:manipulation
+}
+body{
+    font-size:1.2rem;
+    line-height:1.5em
+}
+article,
+code,
+footer,
+header,
+main,
+nav,
+section{
+    display:block
+}
+.no-touch.ua-webkit body *{
+    font-weight:300
+}
+input{
+    outline:none
+}
+button,
+input[type=checkbox],
+input[type=range]{
+    cursor:pointer
+}
+input[type=search]{
+    -webkit-appearance:none;
+    -webkit-border-radius:0
+}
+input[type=search]::-webkit-search-cancel-button,
+input[type=search]::-webkit-search-decoration,
+input[type=search]::-webkit-search-results-button,
+input[type=search]::-webkit-search-results-decoration{
+    -webkit-appearance:none;
+}
+button{
+    background:-moz-linear-gradient(#77c2fd,#5eaef5 50%,#57a8f1 51%,#4296e7);
+    background:-webkit-linear-gradient(#77c2fd,#5eaef5 50%,#57a8f1 51%,#4296e7);
+    background:linear-gradient(#77c2fd,#5eaef5 50%,#57a8f1 51%,#4296e7);
+    border:1px #4296e7 solid;
+    border-radius:3px;
+    box-shadow:0 1px 0 #fff;
+    color:#fff;
+    font-size:1.6rem;
+    font-weight:bold;
+    letter-spacing:-1px;
+    padding:4px 9px;
+    text-decoration:none;
+    text-shadow:0 1px 1px rgba(0,0,0,.6)
+}
+button:focus{
+    background:-moz-linear-gradient(#77c2fd,#5eaef5 50%,#5eaef5 51%,#5eaef5);
+    background:-webkit-linear-gradient(#77c2fd,#5eaef5 50%,#5eaef5 51%,#5eaef5);
+    background:linear-gradient(#77c2fd,#5eaef5 50%,#5eaef5 51%,#5eaef5);
+    text-shadow:0 -1px 3px rgba(0,0,0,1)
+}
+button:active{
+    background:-moz-linear-gradient(#5eaef5,#77c2fd 50%,#77c2fd);
+    background:-webkit-linear-gradient(#5eaef5,#77c2fd 50%,#77c2fd);
+    background:linear-gradient(#5eaef5,#77c2fd 50%,#77c2fd);
+    box-shadow:0 3px 6px rgba(0,0,0,.2) inset,0 0 13px #77c2fd,0 0 23px #77c2fd,0 0 6px #77c2fd
+}
+h1,
+h2,
+h3{
+    font-weight:200
+}
+.ua-webkit h1,
+.ua-webkit h2,
+.ua-webkit h3{
+    font-weight:400
+}
+template{
+    display:none;
+    speak:none
+}
+
+
+/* Support classes */
+.offScreen{
+    position:absolute;
+    top:-999999px
+}
+
+
+/* App elements */
+.no-js noscript{
+    display:block;
+    font-size:3rem;
+    padding:90px;
+    text-align:center
+}
+
+.hdr{
+    height:250px;
+    text-align:center
+}
+.hdr h1{
+    font-family:'HelveticaNeue-UltraLight','Helvetica Neue UltraLight','Helvetica Neue',Helvetica,Roboto,Arial,sans-serif;
+    font-size:7rem;
+    font-weight:300;
+    letter-spacing:-2px;
+    padding:100px 0 20px
+}
+
+.content{
+    padding:20px 0 40px
+}
+.content p{
+    margin:0 0 20px
+}
+.content h3{
+    font-size:3rem;
+    line-height:4rem
+}
+.content h3 span{
+    font-size:2rem;
+    opacity:0
+}
+.content h3:hover span{
+    opacity:1
+}
+.content article > p{
+    font-size:3rem;
+    text-align:center
+}
+.content .column{
+    display:inline-block;
+    font-size:1.6rem;
+    line-height:1.6em;
+    margin-bottom:30px;
+    padding:0 30px 0 0;
+    width:49.5%;
+    vertical-align:top
+}
+.content .column + .column{
+    padding:0 0 0 30px
+}
+.content .example{
+    margin:6px 0 34px
+}
+.content code{
+    background:rgba(0,0,0,.25);
+    padding:10px
+}
+.content code.copied{
+    border:1px #000 dotted
+}
+
+.ftr{
+    background:#333;
+    padding:20px 0 40px;
+    text-align:center
+}
+
+/* RD */
+@media(max-width:767px){
+    .content h3{
+        text-align:center
+    }
+    .content h3 span{
+        display:none
+    }
+}
+
+@media(min-width:900px){
+    main{
+        margin:0 auto;
+        width:900px
+    }
+}
