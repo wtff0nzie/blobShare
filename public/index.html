@@ -84,14 +84,12 @@
             var copyToClip = function (el) {
                 var client = new ZeroClipboard(el);
 
-                client.on('ready', function (evt) {
-                    client.on('aftercopy', function () {
-                       el.className = 'copied';
+                client.on('aftercopy', function () {
+                   el.className = 'copied';
 
-                        setTimeout(function () {
-                            el.className = '';
-                        }, 3 * 1000);
-                    });
+                    setTimeout(function () {
+                        el.className = '';
+                    }, 3 * 1000);
                 });
             };
 
