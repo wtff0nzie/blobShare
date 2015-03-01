@@ -91,15 +91,6 @@ h2,
 h3{
     font-weight:200
 }
-.ua-webkit h1,
-.ua-webkit h2,
-.ua-webkit h3{
-    font-weight:400
-}
-template{
-    display:none;
-    speak:none
-}
 
 
 /* Support classes */
