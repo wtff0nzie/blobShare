@@ -29,9 +29,11 @@
     <meta property="fb:admins" content="">
 </head>
 <body role="application" class="bS">
+
     <header class="hdr" role="banner">
         <h1><strong>BlobShare</strong>.Rocks</h1>
     </header>
+
     <main class="content" role="main">
 
         <article>
@@ -52,21 +54,21 @@
 
         <section class="example">
             <h3>Reading an existing blob <span>named <strong>test-blob</strong></span></h3>
-            <code title="Click to copy this example to clipboard.">http://localhost:8082/test-blob</code>
+            <code title="Click to copy this example to clipboard.">http://blobshare.rocks/test-blob</code>
         </section>
 
         <section class="example">
             <h3>Update a blob <span>named <strong>test-blob</strong></span></h3>
             <code title="Click to copy this example to clipboard.">curl -v -H "Content-Type: application/json" -X PATCH -d '{"todont":{"subject":"Re-watch SouthPark season 18."},"wiggle":1}' \
-                http://localhost:8082/test-blob</code>
+                http://blobshare.rocks/test-blob</code>
         </section>
 
         <section class="example">
             <h3>Deleting a blob <span>named <strong>test-blob</strong></span></h3>
-            <code title="Click to copy this example to clipboard.">curl -X DELETE http://localhost:8082/test-blob</code>
+            <code title="Click to copy this example to clipboard.">curl -X DELETE http://blobshare.rocks/test-blob</code>
         </section>
-        curl -X DELETE http://localhost:8082/test-blob
     </main>
+
     <footer class="ftr">
         <p>&copy; 2015 <strong>blobShare</strong>.rocks</p>
     </footer>

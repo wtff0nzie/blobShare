@@ -24,6 +24,6 @@
     "formidable": "1.0.14",
     "mongojs": "0.18.1",
     "node-uuid": "*",
-    "simpl3s": ">= 0.3.6"
+    "simpl3s": ">= 0.3.8"
   }
 }

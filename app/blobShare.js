@@ -30,6 +30,12 @@ DB = mongo.connect('mongodb://' + DBcreds, DBcollection);
 DB.blobs.ensureIndex('name');
 
 
+// Optimise static assets
+if (!process.env.dev) {
+    require('simpl3s').speedify('./public');
+}
+
+
 // Can request be gzipped?
 var acceptGzip = function (request) {
     var acceptEncoding = request.headers['accept-encoding'] || '';
@@ -63,14 +69,14 @@ var serveJSON = function (payload, json) {
 
     if (!acceptGzip(payload.req)) {
         res.writeHead(status, {'Content-Type': 'application/json'});
-        res.end(JSON.stringify(json));
+        res.end(json);
     } else {
         res.writeHead(status, {
             'Content-Type': 'application/json',
             'Content-Encoding': 'gzip'
         });
 
-        buffer = new Buffer(JSON.stringify(json), 'utf-8');
+        buffer = new Buffer(json, 'utf-8');
         gZip.gzip(buffer, function (_, result) {                // TODO: stream
             res.end(result);
         });
@@ -111,24 +117,6 @@ var genBlob = function (blobName, blob, nuBlob) {
 
     return blob;
 };
-
-
-// TEMP
-setTimeout(function () {
-    return;
-    var testBlob1 = {
-        name: 'hi2',
-        created: 123,
-        versions: [
-            {"first": "wan"}
-        ],
-        hits: 1
-    };
-
-
-    console.log(genBlob('hi'));
-    console.log(genBlob('hi2', testBlob1, {"some": "thing"}));
-}, 99);
 
 
 // Fetch a blob
@@ -269,3 +257,9 @@ var handleBlob = function (payload) {
 
 // Public API
 EVENTS.on('blobShare', handleBlob);
+
+
+// Listen for requests
+EVENTS.on('buildRoutes', function (func) {
+    func('/:blob', handleBlob);
+});

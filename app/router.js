@@ -2,11 +2,14 @@
  *                      Router
  ****************************************************
  *
- *   About:  Routes collection and direction.
+ *   About:  Route collection and direction.
  *
  ****************************************************/
+'use strict';
+
 var fileServer = require('simpl3s'),
     url = require('url'),
+    ready = false,
     routes = {};
 
 
@@ -17,41 +20,83 @@ var routeRequest = function (payload) {
         route = routes[reqPath];
 
 
-    // Fling out a static file
-    var serveStaticFile = function (uri) {
-        if (uri) {
-            payload.req.url = uri;
+    // Deal with a route request
+    var handleRequest = function (route, params) {
+        if (typeof route.func === 'String') {
+            serveStaticFile(route.func);
+        } else {
+            route.func(payload, params);
+        }
+
+        if (route.evt) {
+            EVENTS.emit(route.evt, payload, params);
+        }
+    };
+
+
+    // Static file request, serve it
+    var serveStaticFile = function (url) {
+        if (url) {
+            payload.req.url = url;
         }
 
         fileServer.serveFile(payload.req, payload.res);
     };
 
 
-    // Dig into a partial hit
-    var handlePartial = function (uri) {
-        console.log('TODO: handle partial calls');
+    // Discover if request is a partial, discover arguments and trigger
+    var handlePartial = function () {
+        var foundPartial = false,
+            params = {},
+            partial;
+
+        Object.keys(routes).some(function (item) {
+            var keys = item.split(':'),
+                routeLen,
+                args;
+
+            if (! Array.isArray(keys)) {
+                return;
+            }
+
+            routeLen = keys[0].length;
+
+            if (reqPath.substr(0, routeLen) === keys[0] || (keys[0].slice(-1) === '/' && reqPath.substr(0, routeLen) === keys[0].substr(0, routeLen -1))) {
+                args = reqPath.substr(keys[0].length).split('/');
+                keys.shift();
+
+                keys.forEach(function (key, index) {
+                    if (args[index]) {
+                        params[key.replace('/', '')] = args[index];
+                    }
+                });
+
+                partial = routes[item];
+                foundPartial = true;
+            }
+            return foundPartial;
+        });
+
+        if (foundPartial) {
+            handleRequest(partial, params);
+            return;
+        }
+
+        // No match, fall back to 404
+        serveStaticFile('/404.html');
+        EVENTS.emit('error404', payload);
     };
 
 
     // Handle routing requests as quickly as possible
-    if (reqPath === '/') {
+    if (reqPath === '/' && !route) {
         serveStaticFile('/index.html');
     } else if (route) {
-        if (typeof route.func === 'String') {
-            serveStaticFile();
-        } else {
-            route.func(payload);
-        }
-
-        if (route.evt) {
-            EVENTS.emit(route.evt, payload);
-        }
+        handleRequest(route);
     } else if (reqPath.substr(0, 6) === '/media') {
-        serveStaticFile();
-    } else if (reqPath.substr(0, 4) === '/api') {
-        EVENTS.emit('blobShare', payload); // TMP
+        serveStaticFile(reqPath);
     } else {
-        EVENTS.emit('blobShare', payload);
+        handlePartial();
     }
 };
 
@@ -71,23 +116,51 @@ var addEvent = function (uri, evt) {
 // Add routes from across application
 var buildRoute = function (uri, func, evt) {
     routes[uri] = {
-        evt: evt || null,
+        evt : evt || null,
         func: func || uri
     };
 };
 
 
-// Allow app to init, then ask for routes TODO: Event this
-setTimeout(function () {
+// List all current routes
+var listRoutes = function () {
+    return JSON.parse(JSON.stringify(routes));
+};
+
+
+// Trigger a route
+var triggerRoute = function (payload, url) {
+    payload.req.url = url;
+    routeRequest(payload);
+};
+
+
+// Invite route addition and respond to hits
+var initRouter = function () {
+    if (ready) {
+        return;
+    }
+
     EVENTS.emit('buildRoutes', buildRoute);
     EVENTS.on('addRouteEvent', addEvent);
+    EVENTS.on('listRoutes', listRoutes);
+    EVENTS.on('eventedHit', triggerRoute);
     EVENTS.on('hit', routeRequest);
-}, 500);
+
+    ready = true;
+};
 
 
 // Public API (events preferred)
-module.export = {
+module.exports = {
     addEvent    : addEvent,
     addRoute    : buildRoute,
-    route       : routeRequest
+    list        : listRoutes,
+    route       : routeRequest,
+    trigger     : triggerRoute
 };
+
+
+// Listen for application ready events, with timer fallback
+EVENTS.on('DBReady', initRouter);
+setTimeout(initRouter, 999);
