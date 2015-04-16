@@ -56,6 +56,7 @@ var serveJSON = function (payload, json) {
         status = payload.httpStatus || 200,
         buffer;
 
+    payload = preflightCORS(payload);
 
     if (!json) {
         res.writeHead(404, {'Content-Type': 'application/json'});
