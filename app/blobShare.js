@@ -249,7 +249,7 @@ var handleBlob = function (payload) {
             break;
 
         case 'OPTIONS':
-            preflightCORS(payload);
+            payload = preflightCORS(payload);
             serveJSON(payload, {});
             break;
     };
