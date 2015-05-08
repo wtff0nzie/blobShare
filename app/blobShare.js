@@ -11,8 +11,8 @@ var formHandler = require('formidable'),
     uuid = require('node-uuid'),
     mongo = require('mongojs'),
     objectId = mongo.ObjectId,
-    DBcollection = ['blobs'],
     DBcreds = process.env.DB,
+    DBcollection = ['blobs'],
     gZip = require('zlib'),
     url = require('url'),
     DB;
@@ -56,8 +56,6 @@ var serveJSON = function (payload, json) {
         status = payload.httpStatus || 200,
         buffer;
 
-    payload = preflightCORS(payload);
-
     if (!json) {
         res.writeHead(404, {'Content-Type': 'application/json'});
         res.end('{"blob":"not found"}');
@@ -87,14 +85,15 @@ var serveJSON = function (payload, json) {
 
 // Add CORS when requested
 var preflightCORS = function (payload) {
-    payload.headers = payload.headers || {};
+    var res = payload.res;
 
-    payload.headers['Access-Control-Allow-Origin'] = '*';
-    payload.headers['Access-Control-Allow-Credentials'] = 'true';
-    payload.headers['Access-Control-Allow-Methods'] = 'DELETE, GET, OPTIONS, PATCH, POST, PUT';
-    payload.headers['Access-Control-Allow-Headers'] = 'content-type';
-
-    return payload;
+    res.writeHead(200, {
+        'Access-Control-Allow-Origin'       : '*',
+        'Access-Control-Allow-Credentials'  : 'true',
+        'Access-Control-Allow-Methods'      : 'DELETE, GET, OPTIONS, PATCH, POST, PUT',
+        'Access-Control-Allow-Headers'      : 'Content-Type'
+    });
+    res.end();
 };
 
 
@@ -249,8 +248,7 @@ var handleBlob = function (payload) {
             break;
 
         case 'OPTIONS':
-            payload = preflightCORS(payload);
-            serveJSON(payload, {});
+            preflightCORS(payload);
             break;
     };
 };
