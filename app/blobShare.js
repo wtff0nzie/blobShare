@@ -67,12 +67,22 @@ var serveJSON = function (payload, json) {
     }
 
     if (!acceptGzip(payload.req)) {
-        res.writeHead(status, {'Content-Type': 'application/json'});
+        res.writeHead(status, {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin'       : '*',
+            'Access-Control-Allow-Credentials'  : 'true',
+            'Access-Control-Allow-Methods'      : 'DELETE, GET, OPTIONS, PATCH, POST, PUT',
+            'Access-Control-Allow-Headers'      : 'Content-Type'
+        });
         res.end(json);
     } else {
         res.writeHead(status, {
             'Content-Type': 'application/json',
-            'Content-Encoding': 'gzip'
+            'Content-Encoding': 'gzip',
+            'Access-Control-Allow-Origin'       : '*',
+            'Access-Control-Allow-Credentials'  : 'true',
+            'Access-Control-Allow-Methods'      : 'DELETE, GET, OPTIONS, PATCH, POST, PUT',
+            'Access-Control-Allow-Headers'      : 'Content-Type'
         });
 
         buffer = new Buffer(json, 'utf-8');
