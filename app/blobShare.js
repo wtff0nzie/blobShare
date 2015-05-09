@@ -54,10 +54,19 @@ var acceptGzip = function (request) {
 var serveJSON = function (payload, json) {
     var res = payload.res,
         status = payload.httpStatus || 200,
+        headers,
         buffer;
 
+    headers = {
+        'Content-Type'                      : 'application/json',
+        'Access-Control-Allow-Origin'       : '*',
+        'Access-Control-Allow-Credentials'  : 'true',
+        'Access-Control-Allow-Methods'      : 'DELETE, GET, OPTIONS, PATCH, POST, PUT',
+        'Access-Control-Allow-Headers'      : 'Content-Type'
+    };
+
     if (!json) {
-        res.writeHead(404, {'Content-Type': 'application/json'});
+        res.writeHead(404, headers);
         res.end('{"blob":"not found"}');
         return;
     }
@@ -67,43 +76,18 @@ var serveJSON = function (payload, json) {
     }
 
     if (!acceptGzip(payload.req)) {
-        res.writeHead(status, {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin'       : '*',
-            'Access-Control-Allow-Credentials'  : 'true',
-            'Access-Control-Allow-Methods'      : 'DELETE, GET, OPTIONS, PATCH, POST, PUT',
-            'Access-Control-Allow-Headers'      : 'Content-Type'
-        });
+        res.writeHead(status, headers);
         res.end(json);
     } else {
-        res.writeHead(status, {
-            'Content-Type': 'application/json',
-            'Content-Encoding': 'gzip',
-            'Access-Control-Allow-Origin'       : '*',
-            'Access-Control-Allow-Credentials'  : 'true',
-            'Access-Control-Allow-Methods'      : 'DELETE, GET, OPTIONS, PATCH, POST, PUT',
-            'Access-Control-Allow-Headers'      : 'Content-Type'
-        });
+        headers['Content-Encoding'] = 'gzip';
+
+        res.writeHead(status, headers);
 
         buffer = new Buffer(json, 'utf-8');
         gZip.gzip(buffer, function (_, result) {                // TODO: stream
             res.end(result);
         });
     }
-};
-
-
-// Add CORS when requested
-var preflightCORS = function (payload) {
-    var res = payload.res;
-
-    res.writeHead(200, {
-        'Access-Control-Allow-Origin'       : '*',
-        'Access-Control-Allow-Credentials'  : 'true',
-        'Access-Control-Allow-Methods'      : 'DELETE, GET, OPTIONS, PATCH, POST, PUT',
-        'Access-Control-Allow-Headers'      : 'Content-Type'
-    });
-    res.end();
 };
 
 
@@ -258,7 +242,7 @@ var handleBlob = function (payload) {
             break;
 
         case 'OPTIONS':
-            preflightCORS(payload);
+            serveJSON(payload, {'cors':true});
             break;
     };
 };
@@ -272,3 +256,9 @@ EVENTS.on('blobShare', handleBlob);
 EVENTS.on('buildRoutes', function (func) {
     func('/:blob', handleBlob);
 });
+
+
+// Broadcast DB state
+setTimeout(function () {
+    EVENTS.emit('DBReady');
+}, 99);
