@@ -18,12 +18,12 @@
   "main": "./server",
   "version": "0.3.5",
   "engines": {
-    "node": ">= 0.12"
+    "node": ">= 4"
   },
   "dependencies": {
     "formidable": "1.0.14",
-    "mongojs": "0.18.1",
-    "node-uuid": "*",
-    "simpl3s": ">= 0.3.8"
+    "mongojs":    "1.3.0",
+    "node-uuid":  "*",
+    "simpl3s":    ">= 0.3.8"
   }
 }

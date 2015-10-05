@@ -9,8 +9,7 @@
 
 var formHandler = require('formidable'),
     uuid = require('node-uuid'),
-    mongo = require('mongojs'),
-    objectId = mongo.ObjectId,
+    mongojs = require('mongojs'),
     DBcreds = process.env.DB,
     DBcollection = ['blobs'],
     gZip = require('zlib'),
@@ -26,7 +25,7 @@ if (!DBcreds) {
 
 
 // Fire up DB
-DB = mongo.connect('mongodb://' + DBcreds, DBcollection);
+DB = mongojs(DBcreds, DBcollection, {authMechanism: 'ScramSHA1'});
 DB.blobs.ensureIndex('name');
 
 
